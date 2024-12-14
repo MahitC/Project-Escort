@@ -23,16 +23,20 @@ public class Troop {
         canAttack = true;
     }
     public boolean isInRange(int col, int row){
-        if(col>1||col<-1){
-            col = col/Math.abs(col);
+        if(Math.abs(loc[0]-col)>1){
+            return false;
         }
-        if(row>1||row<-1){
-            row = row/Math.abs(row);
+        if(Math.abs(loc[1]-row)>1){
+            return false;
         }
-        return !canAttack;
+        return true;
     }
-    public int attack (Troop enemy){
-       return enemy.hp-= damage;      
+    public void attack (Troop enemy){
+
+        if(isInRange(enemy.loc[0], enemy.loc[1])){
+            enemy.hp-= damage; 
+        }
+            
     }
     public boolean isDead(){
         if(hp<=0){
@@ -54,13 +58,12 @@ public class Troop {
         if(row>1||row<-1){
             row = row/Math.abs(row);
         }
-        return !hasMoved;
+        return true;
     }
     public void move(int col, int row){
         if(canMove(col,row)){
             loc[0] += row;
             loc[1] += col;
-            hasMoved = true;
         }
         
     }
