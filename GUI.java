@@ -30,13 +30,13 @@ public class GUI extends JFrame {
     }
     
     public static boolean gameOver() {
-    	return true;
+    	return false;
     }
 
     public static void main(String[] args) {
     	Scanner keyboard=new Scanner(System.in);
-    	
-        String[][] matrix = {{"", "", "", "", "", ""}, {"troop1", "", "barrier", "", "", ""}, {"", "troop2", "", "barrier", "enemy1", "enemy2"}, {"wagon", "troop3", "", "barrier", "enemy3", "objective"}, {"barrier", "troop4", "", "enemy4", "", ""}, {"troop5", "", "", "barrier", "enemy5", ""}, {"", "barrier", "", "", "", ""}};
+    	System.out.println("Get the supply wagon (troop 6) to go directly across where it is now!");
+        String[][] matrix = {{"", "", "", "", "", ""}, {"troop1", "", "barrier", "", "", ""}, {"", "troop2", "", "barrier", "enemy1", "enemy2"}, {"wagon", "troop3", "", "barrier", "enemy3", ""}, {"barrier", "troop4", "", "enemy4", "", ""}, {"troop5", "", "", "barrier", "enemy5", ""}, {"", "barrier", "", "", "", ""}};
         Troop troop1=new Troop(35, 100, 1, 0, "troop 1");
         Troop troop2=new Troop(35, 100, 2, 1, "troop 2");
         Troop troop3=new Troop(35, 100, 3, 1, "troop 3");
@@ -52,14 +52,25 @@ public class GUI extends JFrame {
         Troop enemy5=new Troop(35, 100, 0, 0, "enemy 5");
         Troop[] enemies= {enemy1, enemy2, enemy3, enemy4, enemy5};
         
-        while(gameOver()) {
+        while(wagon.getLoc()[0]!=5 || wagon.getLoc()[1]!=3) {
         	GUI gui=new GUI(matrix);
         	System.out.println("1: attack\n2: move\n3: endturn");
         	int option=keyboard.nextInt();
         	if(option==1) {
-        		
-        	}
-        	if(option==2) {
+        		System.out.println("pick a troop");
+        		int troop=keyboard.nextInt()-1;
+        		while(troop<0 || troop>5) {
+        			System.out.println("invalid troop. re-enter troop number");
+        			troop=keyboard.nextInt()-1;
+        		}
+        		System.out.println("pick an enemy");
+        		int enemy=keyboard.nextInt()-1;
+        		while(enemy<0 || enemy>4) {
+        			System.out.println("invalid troop. re-enter troop number");
+        			troop=keyboard.nextInt()-1;
+        		}
+        		troops[troop].attack(enemies[enemy]);
+        	} else if(option==2) {
         		System.out.println("pick a troop");
         		int troop=keyboard.nextInt()-1;
         		while(troop<0 || troop>5) {
@@ -74,6 +85,42 @@ public class GUI extends JFrame {
         			System.out.println("invalid. move up, down or nowhere(-1, 1, 0)");
             		x=keyboard.nextInt();
             		y=keyboard.nextInt();
+        		}
+        		removeItem(matrix, troops[troop].getLoc());
+        		troops[troop].move(x, y);
+        		addItem(matrix, troops[troop].getLoc(), troops[troop].getName());
+        	}
+        	System.out.println("Your turn ended. Enemy moving.");
+        	option=(int) (Math.random()*2+1);
+        	if(option==1) {
+        		System.out.println("pick a troop");
+        		int troop=(int)(Math.random()*5);
+        		while(troop<0 || troop>5) {
+        			System.out.println("invalid troop. re-enter troop number");
+        			troop=(int)(Math.random()*5);
+        		}
+        		System.out.println("pick an enemy");
+        		int enemy=keyboard.nextInt()-1;
+        		while(enemy<0 || enemy>4) {
+        			System.out.println("invalid troop. re-enter troop number");
+        			troop=(int)(Math.random()*5);
+        		}
+        		troops[troop].attack(enemies[enemy]);
+        	} else if(option==2) {
+        		System.out.println("pick a troop");
+        		int troop=(int)(Math.random()*5);
+        		while(troop<0 || troop>5) {
+        			System.out.println("invalid troop. re-enter troop number");
+        			troop=(int)(Math.random()*5);
+        		}
+        		System.out.println("move forward or backward or nowwhere(1,-1, 0)");
+        		int x=(int)(Math.random()*3-1);
+        		System.out.println("move up, down or nowhere(-1, 1, 0)");
+        		int y=(int)(Math.random()*3-1);
+        		while(troops[troop].getLoc()[1]+x>5 || troops[troop].getLoc()[1]+x<0 || troops[troop].getLoc()[0]+y>6 || troops[troop].getLoc()[0]+y<0 || !matrix[troops[troop].getLoc()[0]+x][troops[troop].getLoc()[1]+y].equals("")) {
+        			System.out.println("invalid. move up, down or nowhere(-1, 1, 0)");
+            		x=(int)(Math.random()*3-1);
+            		y=(int)(Math.random()*3-1);
         		}
         		removeItem(matrix, troops[troop].getLoc());
         		troops[troop].move(x, y);
