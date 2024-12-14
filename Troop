@@ -1,7 +1,6 @@
 public class Troop {
    private int damage;
    private int hp;
-   private int cash;
    private int[] loc;
    boolean hasMoved;
    private String name;
@@ -14,7 +13,9 @@ public class Troop {
             this.loc[0] = loc[0];
             this.loc[1] = loc[1];
     }
-
+    public String getName(){
+        return name;
+    }
 
     public int attack (Troop enemy){
        return enemy.hp-= damage;      
@@ -28,7 +29,11 @@ public class Troop {
     public int[] getLoc(){
         return loc;
     }
-    public bool canMove(int xDisp, int yDisp){
+
+    public void allowMove(){
+
+    }
+    public boolean canMove(int xDisp, int yDisp){
         if(xDisp>1||xDisp<-1){
             xDisp = xDisp/Math.abs(xDisp);
         }else{
@@ -42,12 +47,13 @@ public class Troop {
         return !hasMoved;
     }
     public void move(int xDisp, int yDisp){
-        if(xDisp>1||xDisp<-1){
-            xDisp = 1;
+        if(canMove(xDisp,yDisp)){
+            loc[0] += xDisp;
+            loc[1] += yDisp;
+            hasMoved = true;
         }
-        loc[0] += xDisp;
-        loc[1] += yDisp;
-        hasMoved = true;
+        
     }
+
     
 }
