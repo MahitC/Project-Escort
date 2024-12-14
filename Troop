@@ -5,7 +5,6 @@ public class Troop {
    private boolean hasMoved;
    private boolean canAttack;
    private String name;
-   Troop capPoint;
     public Troop(int damage, int hp, int xDisp, int yDisp, String name){
             this.damage=damage;
             this.hp = hp;
@@ -16,21 +15,20 @@ public class Troop {
     public String getName(){
         return name;
     }
+    public int getHP(){
+        return hp;
+    }
     public void allowAttack(){
         canAttack = true;
     }
-    public boolean canAttack(int xDisp, int yDisp){
+    public boolean isInRange(int xDisp, int yDisp){
         if(xDisp>1||xDisp<-1){
             xDisp = xDisp/Math.abs(xDisp);
-        }else{
-            return false;
         }
         if(yDisp>1||yDisp<-1){
             yDisp = yDisp/Math.abs(yDisp);
-        }else{
-            return false;
         }
-        return !hasMoved;
+        return !canAttack;
     }
     public int attack (Troop enemy){
        return enemy.hp-= damage;      
@@ -46,29 +44,24 @@ public class Troop {
     }
 
     public void allowMove(){
-
+        hasMoved = false;
     }
     public boolean canMove(int xDisp, int yDisp){
         if(xDisp>1||xDisp<-1){
             xDisp = xDisp/Math.abs(xDisp);
-        }else{
-            return false;
         }
         if(yDisp>1||yDisp<-1){
             yDisp = yDisp/Math.abs(yDisp);
-        }else{
-            return false;
         }
         return !hasMoved;
     }
     public void move(int xDisp, int yDisp){
         if(canMove(xDisp,yDisp)){
-            loc[0] += xDisp;
-            loc[1] += yDisp;
+            loc[0] += yDisp;
+            loc[1] += xDisp;
             hasMoved = true;
         }
         
     }
-
     
 }
