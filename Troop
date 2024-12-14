@@ -2,21 +2,36 @@ public class Troop {
    private int damage;
    private int hp;
    private int[] loc;
-   boolean hasMoved;
+   private boolean hasMoved;
+   private boolean canAttack;
    private String name;
    Troop capPoint;
-    public Troop(int damage, int hp, int[] loc, String name){
+    public Troop(int damage, int hp, int xDisp, int yDisp, String name){
             this.damage=damage;
             this.hp = hp;
-            
-            this.loc = new int[2];
-            this.loc[0] = loc[0];
-            this.loc[1] = loc[1];
+            loc = new int[2];
+            loc[0] = xDisp;
+            loc[1] = yDisp;
     }
     public String getName(){
         return name;
     }
-
+    public void allowAttack(){
+        canAttack = true;
+    }
+    public boolean canAttack(int xDisp, int yDisp){
+        if(xDisp>1||xDisp<-1){
+            xDisp = xDisp/Math.abs(xDisp);
+        }else{
+            return false;
+        }
+        if(yDisp>1||yDisp<-1){
+            yDisp = yDisp/Math.abs(yDisp);
+        }else{
+            return false;
+        }
+        return !hasMoved;
+    }
     public int attack (Troop enemy){
        return enemy.hp-= damage;      
     }
