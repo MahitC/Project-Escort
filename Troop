@@ -8,6 +8,7 @@ public class Troop {
     public Troop(int damage, int hp, int col, int row, String name){
             this.damage=damage;
             this.hp = hp;
+            this.name = name;
             loc = new int[2];
             loc[0] = row;
             loc[1] = col;
